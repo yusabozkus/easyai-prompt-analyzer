@@ -7,6 +7,8 @@ import pickle
 import sys
 from pathlib import Path
 
+# just forn testing
+
 DATA_FILE = Path(__file__).parent / "quality.jsonl"
 MODEL_FILE = Path(__file__).parent / "./prompt_quality_model.pkl"
 
