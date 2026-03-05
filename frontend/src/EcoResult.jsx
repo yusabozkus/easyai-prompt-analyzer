@@ -1,12 +1,22 @@
 
+<<<<<<< HEAD
 export const EcoResult = ({
     userQuery = "Suggest sustainable materials for a high-performance outdoor jacket, prioritizing carbon footprint reduction and durability.",
+=======
+
+
+export const EcoResult = ({
+>>>>>>> b8c6548 (Commit error solved?)
     score = 50,
     scoreName = "High Efficiency",
     waterSaved = "1,240 L",
     energySaved = "45 kWh",
     carbonOffset = "12.5 kg"
 }) => {
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const userQuery = location.state?.userQuery || "No query provided";
 
     let barColorClass = "";
 
@@ -154,7 +164,10 @@ export const EcoResult = ({
 
             {/* Botón flotante para Nueva Análisis */}
             <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-40">
-                <button className="flex items-center gap-3 bg-emerald-900 text-white px-8 py-4 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgba(16,185,129,0.3)] hover:-translate-y-1 transition-all font-bold text-sm border border-emerald-700">
+                <button
+                    onClick={() => navigate('/')}
+                    className="flex items-center gap-3 bg-emerald-900..."
+                >
                     <span className="material-symbols-outlined text-xl">add_circle</span>
                     New Analysis
                 </button>
