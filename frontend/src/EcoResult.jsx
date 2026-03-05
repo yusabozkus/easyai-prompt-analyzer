@@ -1,5 +1,5 @@
 
-export const EcoResult = ({ 
+export const EcoResult = ({
     userQuery = "Suggest sustainable materials for a high-performance outdoor jacket, prioritizing carbon footprint reduction and durability.",
     score = 10,
     scoreName = "High Efficiency",
@@ -9,7 +9,7 @@ export const EcoResult = ({
 }) => {
     return (
         <div className="bg-white min-h-screen flex flex-col font-display selection:bg-emerald-500/30 selection:text-emerald-900 overflow-hidden text-slate-900 relative">
-            
+
             <header className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-8 py-5 bg-emerald-900 shadow-lg shadow-emerald-900/20">
                 <div className="flex items-center gap-3 group cursor-pointer">
                     <div className="size-8 rounded-full bg-emerald-800 flex items-center justify-center text-emerald-300 group-hover:bg-emerald-400 group-hover:text-emerald-950 transition-colors duration-300">
@@ -24,7 +24,7 @@ export const EcoResult = ({
 
             <main className="flex-1 flex justify-center w-full px-4 sm:px-6 lg:px-8 pt-28 pb-32 overflow-y-auto z-10">
                 <div className="w-full max-w-3xl flex flex-col gap-8">
-                    
+
                     <div className="flex justify-end mb-2">
                         <div className="bg-emerald-50 border border-emerald-100 rounded-2xl rounded-tr-sm px-6 py-4 max-w-[85%] shadow-sm">
                             <p className="text-sm font-medium text-emerald-950">
@@ -34,7 +34,7 @@ export const EcoResult = ({
                     </div>
 
                     <div className="flex gap-4 sm:gap-6 animate-fade-in">
-                        
+
                         <div className="flex-shrink-0 mt-1">
                             <div className="size-10 rounded-full bg-gradient-to-br from-emerald-600 to-emerald-400 p-[2px] shadow-md shadow-emerald-500/20">
                                 <div className="size-full rounded-full bg-white flex items-center justify-center">
@@ -44,7 +44,7 @@ export const EcoResult = ({
                         </div>
 
                         <div className="flex flex-col gap-6 flex-1">
-                            
+
                             <div className="flex flex-col gap-3">
                                 <div className="flex items-center gap-2 mb-1">
                                     <span className="text-sm font-bold text-slate-900">EcoAI Analysis</span>
@@ -68,15 +68,14 @@ export const EcoResult = ({
                                         <span className="text-4xl font-black text-emerald-600">{score}%</span>
                                     </div>
                                 </div>
-                                
+
                                 {/* Progress Bar */}
                                 <div className="relative h-4 w-full bg-slate-100 rounded-full overflow-hidden flex">
                                     <div className="w-1/3 h-full border-r border-white/50 bg-red-100"></div>
                                     <div className="w-1/3 h-full border-r border-white/50 bg-orange-100"></div>
                                     <div className="w-1/3 h-full bg-emerald-50"></div>
-                                    {/* Indicador dinámico usando la prop {score} */}
-                                    <div 
-                                        className="absolute top-0 left-0 h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(16,185,129,0.4)]" 
+                                    <div
+                                        className="absolute top-0 left-0 h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(16,185,129,0.4)]"
                                         style={{ width: `${score}%` }}
                                     ></div>
                                 </div>
@@ -87,7 +86,6 @@ export const EcoResult = ({
                                 </div>
                             </div>
 
-                            {/* NUEVO: Métricas Detalladas (Agua, Energía, Carbono) */}
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                 <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex flex-col items-center text-center">
                                     <span className="material-symbols-outlined text-blue-500 text-3xl mb-2">water_drop</span>
@@ -113,13 +111,10 @@ export const EcoResult = ({
                                     Actionable Tips
                                 </h4>
                                 <ul className="space-y-2 text-sm text-slate-600">
+                                    {tips}
                                     <li className="flex gap-2 items-start">
                                         <span className="material-symbols-outlined text-emerald-500 text-[18px]">check_circle</span>
-                                        Source materials from local suppliers within a 50-mile radius to cut transport emissions.
-                                    </li>
-                                    <li className="flex gap-2 items-start">
-                                        <span className="material-symbols-outlined text-emerald-500 text-[18px]">check_circle</span>
-                                        Use natural dyes instead of synthetic ones to preserve water quality.
+                                        {tips}
                                     </li>
                                 </ul>
                             </div>
