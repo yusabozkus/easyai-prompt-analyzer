@@ -1,10 +1,8 @@
-import React from 'react';
+
 
 export const EcoAnalyzer = () => {
     return (
         <div className="bg-white min-h-screen flex flex-col font-display selection:bg-emerald-500/30 selection:text-emerald-900 overflow-hidden text-slate-900">
-            <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet" />
-            <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700&display=swap" rel="stylesheet" />
 
             <header className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-8 py-5 bg-emerald-900 shadow-lg shadow-emerald-900/20">
                 <div className="flex items-center gap-3 group cursor-pointer">
