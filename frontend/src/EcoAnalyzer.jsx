@@ -1,10 +1,19 @@
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
-export const EcoAnalyzer = () => {
+const EcoAnalyzer = () => {
+
+    const navigate = useNavigate();
+    const [query, setQuery] = useState("");
+
+    const handleSearch = () => {
+        if (query.trim()) {
+            navigate('/result', { state: { userQuery: query } });
+        }
+    };
+
     return (
         <div className="bg-white min-h-screen flex flex-col font-display selection:bg-emerald-500/30 selection:text-emerald-900 overflow-hidden text-slate-900">
-            <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet" />
-            <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700&display=swap" rel="stylesheet" />
 
             <header className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-8 py-5 bg-emerald-900 shadow-lg shadow-emerald-900/20">
                 <div className="flex items-center gap-3 group cursor-pointer">
@@ -40,13 +49,18 @@ export const EcoAnalyzer = () => {
                             </div>
                             <input
                                 autoFocus
-                                className="w-full bg-transparent border-none focus:ring-0 text-white placeholder:text-emerald-200/60 py-6 px-4 text-xl font-light tracking-wide outline-none"
+                                className="w-full bg-transparent..."
                                 placeholder="Paste your prompt..."
                                 type="text"
+                                value={query}
+                                onChange={(e) => setQuery(e.target.value)}
+                                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                             />
                             <div className="pr-3 flex items-center gap-2">
                                 <div className="h-6 w-px bg-emerald-700 mx-1"></div>
-                                <button className="flex items-center justify-center size-10 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-all duration-200 shadow-lg shadow-emerald-500/30">
+                                <button 
+                                onClick={handleSearch}
+                                className="flex items-center justify-center size-10 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-all duration-200 shadow-lg shadow-emerald-500/30">
                                     <span className="material-symbols-outlined text-[20px]">arrow_upward</span>
                                 </button>
                             </div>
