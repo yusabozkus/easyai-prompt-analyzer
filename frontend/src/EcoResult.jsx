@@ -1,12 +1,23 @@
 
 export const EcoResult = ({
     userQuery = "Suggest sustainable materials for a high-performance outdoor jacket, prioritizing carbon footprint reduction and durability.",
-    score = 10,
+    score = 50,
     scoreName = "High Efficiency",
     waterSaved = "1,240 L",
     energySaved = "45 kWh",
     carbonOffset = "12.5 kg"
 }) => {
+
+    let barColorClass = "";
+
+    if (score <= 33) {
+        barColorClass = "from-red-500 to-red-400 shadow-[0_0_10px_rgba(239,68,68,0.4)]";
+    } else if (score <= 66) {
+        barColorClass = "from-orange-500 to-orange-400 shadow-[0_0_10px_rgba(249,115,22,0.4)]";
+    } else {
+        barColorClass = "from-emerald-500 to-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.4)]";
+    }
+
     return (
         <div className="bg-white min-h-screen flex flex-col font-display selection:bg-emerald-500/30 selection:text-emerald-900 overflow-hidden text-slate-900 relative">
 
@@ -74,8 +85,9 @@ export const EcoResult = ({
                                     <div className="w-1/3 h-full border-r border-white/50 bg-red-100"></div>
                                     <div className="w-1/3 h-full border-r border-white/50 bg-orange-100"></div>
                                     <div className="w-1/3 h-full bg-emerald-50"></div>
+                                    {/* Indicador dinámico usando la prop {score} */}
                                     <div
-                                        className="absolute top-0 left-0 h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(16,185,129,0.4)]"
+                                        className={`absolute top-0 left-0 h-full bg-gradient-to-r ${barColorClass} rounded-full transition-all duration-1000 ease-out`}
                                         style={{ width: `${score}%` }}
                                     ></div>
                                 </div>

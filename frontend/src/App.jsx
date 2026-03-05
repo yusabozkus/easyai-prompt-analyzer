@@ -4,7 +4,7 @@ import { EcoResult } from './EcoResult'
 
 function App() {
   return (
-    <EcoResult />
+    <EcoAnalyzer />
   )
 }
 
