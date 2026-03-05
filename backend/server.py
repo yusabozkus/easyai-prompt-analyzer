@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from prompt_analyzer.score import score
+from estimate_token.estimate import calculate_ewk_dto
 
 app = FastAPI()
 
@@ -17,3 +18,9 @@ def read_root():
 @app.post("/score")
 def score_endpoint(body: PromptRequest):
     return score(body.prompt)
+
+
+@app.posr("/analyze")
+def analyze(body: PromptRequest):
+    dto = calculate_ewk_dto(body.prompt)
+    return dto
