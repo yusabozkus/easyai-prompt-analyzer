@@ -43,20 +43,6 @@
 
 <p>Once we have the total tokens (Input + Estimated Output), we use the following formulas to calculate the environmental impact. Let <em>T<sub>total</sub></em> be the total number of tokens, <em>E<sub>token</sub></em> be the energy per token, and <em>C<sub>Q</sub></em> be the model's capacity constant.</p>
 
-<ul>
-    <li><strong>1. Total Energy in Joules:</strong><br> 
-    <code>E<sub>joules</sub> = T<sub>total</sub> &times; E<sub>token</sub> &times; C<sub>Q</sub></code></li>
-    <br>
-    <li><strong>2. Energy in Watt-hours (Wh):</strong><br> 
-    <code>E<sub>Wh</sub> = E<sub>joules</sub> / 3600</code></li>
-    <br>
-    <li><strong>3. Water Consumption (Liters):</strong><br> 
-    Assuming <em>W<sub>ml</sub></em> is the water consumed per token in milliliters (e.g., 7.5 ml):<br>
-    <code>W<sub>liters</sub> = (T<sub>total</sub> &times; W<sub>ml</sub>) / 1000</code></li>
-    <br>
-    <li><strong>4. Financial Cost (Euros):</strong><br> 
-    <code>Cost = (E<sub>Wh</sub> / 1000) &times; Price<sub>kWh</sub></code></li>
-</ul>
 
 <hr>
 
