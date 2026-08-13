@@ -1,3 +1,4 @@
 backend/__pycache__
 backend/prompt_analyzer/__pycache__
 backend/estimate_token/__pycache__
+backend/.venv

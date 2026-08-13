@@ -1,21 +1,42 @@
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { fetchAllData, checkHealth } from './api';
+import { useRef, useState } from 'react';
+import { fetchAllData } from './api';
+import SiteHeader from './SiteHeader';
+
+const examples = [
+    {
+        level: 'Excellent',
+        icon: 'verified',
+        badge: 'text-emerald-700 bg-emerald-50 border-emerald-200',
+        prompt: 'You are an energy analyst. Context: a small Italian municipality is comparing solar and wind power. Analyze both options in a Markdown table with exactly 4 criteria: cost, reliability, land use, and emissions. For example, explain how intermittency affects reliability. End with a recommendation of at most 2 sentences and state your assumptions.',
+    },
+    {
+        level: 'Good',
+        icon: 'thumb_up',
+        badge: 'text-blue-700 bg-blue-50 border-blue-200',
+        prompt: 'Summarize the following article in 5 bullet points for university students. Focus on the main argument, supporting evidence, and conclusion. Keep each bullet under 25 words: [paste article]',
+    },
+    {
+        level: 'Average',
+        icon: 'remove',
+        badge: 'text-amber-700 bg-amber-50 border-amber-200',
+        prompt: 'Explain what renewable energy?',
+    },
+    {
+        level: 'Poor',
+        icon: 'warning',
+        badge: 'text-red-700 bg-red-50 border-red-200',
+        prompt: 'Tell me about energy.',
+    },
+];
 
 const EcoAnalyzer = () => {
     const navigate = useNavigate();
+    const promptInputRef = useRef(null);
     const [query, setQuery] = useState("");
     const [isFocused, setIsFocused] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [backendOnline, setBackendOnline] = useState(null);
-
-    useEffect(() => {
-        const poll = () => checkHealth().then(setBackendOnline);
-        poll();
-        const interval = setInterval(poll, 15000);
-        return () => clearInterval(interval);
-    }, []);
 
     const handleSearch = async () => {
         if (!query.trim() || isLoading) return;
@@ -34,14 +55,14 @@ const EcoAnalyzer = () => {
         }
     };
 
-    const examples = [
-        "Summarize this article in 3 bullet points",
-        "Write a Python function for sorting",
-        "Translate this paragraph to Spanish",
-    ];
+    const selectExample = (example) => {
+        setQuery(example.prompt);
+        setError(null);
+        requestAnimationFrame(() => promptInputRef.current?.focus());
+    };
 
     return (
-        <div className="min-h-screen flex flex-col font-display relative overflow-hidden bg-[#f8faf9]">
+        <div className="min-h-screen flex flex-col font-display relative overflow-x-hidden bg-[#f8faf9]">
 
             <div className="absolute inset-0 pointer-events-none -z-10">
                 <div className="absolute inset-0 opacity-[0.03]"
@@ -55,28 +76,7 @@ const EcoAnalyzer = () => {
                 <div className="absolute top-[40%] right-[10%] w-[300px] h-[300px] bg-teal-400/5 rounded-full blur-[100px] animate-float" style={{ animationDelay: '5s' }} />
             </div>
 
-            <header className="fixed top-0 left-0 w-full z-50 px-6 py-3">
-                <div className="max-w-5xl mx-auto flex items-center justify-between bg-white/70 backdrop-blur-xl border border-white/80 rounded-2xl px-6 py-3 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_24px_rgba(0,0,0,0.04)]">
-                    <div className="flex items-center gap-3 group cursor-pointer" onClick={() => navigate('/')}>
-                        <div className="size-9 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center text-white shadow-md shadow-emerald-500/20 group-hover:shadow-lg group-hover:shadow-emerald-500/30 transition-all duration-300 group-hover:scale-105">
-                            <span className="material-symbols-outlined text-[20px]">eco</span>
-                        </div>
-                        <div className="flex flex-col">
-                            <h2 className="text-slate-900 text-base font-bold tracking-tight leading-none">EcoAI</h2>
-                            <span className="text-[10px] text-emerald-600 font-medium tracking-wider uppercase">Prompt Analyzer</span>
-                        </div>
-                    </div>
-                    <nav className="hidden md:flex items-center gap-1">
-                        <a className="text-slate-500 hover:text-emerald-700 hover:bg-emerald-50 text-sm font-medium transition-all px-4 py-2 rounded-xl" href="#metrics">Metrics</a>
-                        <a className="text-slate-500 hover:text-emerald-700 hover:bg-emerald-50 text-sm font-medium transition-all px-4 py-2 rounded-xl" href="#about">About</a>
-                        <div className="w-px h-5 bg-slate-200 mx-2"></div>
-                        <div className={`flex items-center gap-1.5 text-xs font-mono px-3 py-1.5 rounded-full border ${backendOnline === null ? 'text-slate-400 bg-slate-50 border-slate-200' : backendOnline ? 'text-emerald-600 bg-emerald-50 border-emerald-100' : 'text-red-500 bg-red-50 border-red-100'}`}>
-                            <span className={`inline-block w-1.5 h-1.5 rounded-full ${backendOnline === null ? 'bg-slate-400 animate-pulse' : backendOnline ? 'bg-emerald-500 animate-pulse' : 'bg-red-500'}`} />
-                            {backendOnline === null ? 'Checking...' : backendOnline ? 'Online' : 'Offline'}
-                        </div>
-                    </nav>
-                </div>
-            </header>
+            <SiteHeader />
 
             <main className="flex-1 flex flex-col items-center justify-center w-full max-w-3xl mx-auto px-6 pt-28 pb-16 relative z-10">
                 <div className="w-full flex flex-col gap-10 animate-fade-in">
@@ -112,7 +112,7 @@ const EcoAnalyzer = () => {
                                         <div className="w-3 h-3 rounded-full bg-[#febc2e] shadow-inner" />
                                         <div className="w-3 h-3 rounded-full bg-[#28c840] shadow-inner" />
                                     </div>
-                                    <span className="text-emerald-600/50 text-xs font-mono">ecoai — prompt-analyzer</span>
+                                    <span className="text-emerald-600/50 text-xs font-mono">easyai — prompt-analyzer</span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <span className={`inline-block w-1.5 h-1.5 rounded-full transition-colors ${isFocused ? 'bg-emerald-400 animate-pulse' : 'bg-emerald-800'}`} />
@@ -126,6 +126,7 @@ const EcoAnalyzer = () => {
                                         <span className="text-emerald-500 text-sm font-mono font-bold">❯</span>
                                     </div>
                                     <textarea
+                                        ref={promptInputRef}
                                         autoFocus
                                         rows={1}
                                         className="w-full bg-transparent text-emerald-100 placeholder-emerald-800/60 text-[15px] font-mono outline-none caret-emerald-400 resize-none overflow-y-auto leading-6"
@@ -203,19 +204,47 @@ const EcoAnalyzer = () => {
                         </div>
                     )}
 
-                    <div className="flex flex-wrap items-center justify-center gap-2 animate-fade-in" style={{ animationDelay: '0.3s' }}>
-                        <span className="text-xs text-slate-400 font-medium mr-1">Quick start:</span>
-                        {examples.map((example, i) => (
-                            <button
-                                key={i}
-                                onClick={() => setQuery(example)}
-                                disabled={isLoading}
-                                className="text-xs px-4 py-2 rounded-full bg-white text-slate-600 border border-slate-200 hover:border-emerald-300 hover:text-emerald-700 hover:bg-emerald-50 transition-all duration-200 cursor-pointer hover:scale-[1.03] active:scale-[0.97] shadow-sm disabled:opacity-50 disabled:cursor-not-allowed font-medium"
-                            >
-                                {example}
-                            </button>
-                        ))}
-                    </div>
+                    <section className="bg-white/70 backdrop-blur-sm border border-white rounded-2xl p-4 sm:p-5 shadow-[0_10px_35px_rgba(15,23,42,0.05)] animate-fade-in" style={{ animationDelay: '0.3s' }}>
+                        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-1 mb-4">
+                            <div>
+                                <h2 className="text-sm font-bold text-slate-800">Quick start</h2>
+                                <p className="mt-1 text-xs text-slate-400">Choose an example to compare different prompt quality levels.</p>
+                            </div>
+                            <span className="hidden sm:inline text-[10px] font-mono text-slate-400">click to use</span>
+                        </div>
+
+                        <div className="grid sm:grid-cols-2 gap-2.5">
+                            {examples.map((example) => {
+                                const isSelected = query === example.prompt;
+
+                                return (
+                                    <button
+                                        key={example.level}
+                                        type="button"
+                                        onClick={() => selectExample(example)}
+                                        disabled={isLoading}
+                                        aria-pressed={isSelected}
+                                        aria-label={`Use the ${example.level.toLowerCase()} prompt example`}
+                                        className={`group text-left rounded-xl border p-3.5 transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${isSelected
+                                            ? 'bg-emerald-50/70 border-emerald-300 shadow-sm ring-2 ring-emerald-500/10'
+                                            : 'bg-white border-slate-200 hover:border-emerald-300 hover:bg-emerald-50/40 hover:-translate-y-0.5'
+                                            }`}
+                                    >
+                                        <div className="flex items-center justify-between gap-3 mb-2.5">
+                                            <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ${example.badge}`}>
+                                                <span className="material-symbols-outlined text-[14px]">{example.icon}</span>
+                                                {example.level}
+                                            </span>
+                                            <span className={`material-symbols-outlined text-[17px] transition-all ${isSelected ? 'text-emerald-600' : 'text-slate-300 group-hover:text-emerald-500 group-hover:translate-x-0.5'}`}>
+                                                {isSelected ? 'check_circle' : 'arrow_forward'}
+                                            </span>
+                                        </div>
+                                        <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">{example.prompt}</p>
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </section>
 
                     <div className="flex items-center justify-center gap-8 animate-fade-in" style={{ animationDelay: '0.45s' }}>
                         {[
@@ -233,18 +262,6 @@ const EcoAnalyzer = () => {
                 </div>
             </main>
 
-            <footer className="relative z-10 w-full px-6 pb-6">
-                <div className="max-w-5xl mx-auto flex items-center justify-between bg-white/60 backdrop-blur-lg border border-white/70 rounded-2xl px-6 py-3 shadow-sm text-xs">
-                    <div className="flex items-center gap-2 font-mono text-slate-400">
-                        <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                        v0.0.1
-                    </div>
-                    <div className="flex items-center gap-5 text-slate-400 font-medium">
-                        <a className="hover:text-emerald-600 transition-colors" href="#privacy">Privacy</a>
-                        <a className="hover:text-emerald-600 transition-colors" href="#terms">Terms</a>
-                    </div>
-                </div>
-            </footer>
         </div>
     );
 };

@@ -1,14 +1,35 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
+const API_BASE_URL = (
+    import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000"
+).replace(/\/+$/, "");
+
+const HEALTH_RETRY_DELAYS = [0, 1500, 3000];
+
+const wait = (milliseconds) => (
+    new Promise((resolve) => setTimeout(resolve, milliseconds))
+);
 
 export async function checkHealth() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/health`, { method: "GET" });
-        if (!response.ok) return false;
-        const data = await response.json();
-        return data.status === "ok";
-    } catch {
-        return false;
+    for (const retryDelay of HEALTH_RETRY_DELAYS) {
+        if (retryDelay > 0) await wait(retryDelay);
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/health`, {
+                method: "GET",
+                mode: "cors",
+                cache: "no-store",
+                headers: { Accept: "application/json" },
+            });
+
+            if (!response.ok) continue;
+
+            const data = await response.json();
+            if (String(data.status).toLowerCase() === "ok") return true;
+        } catch {
+            // Render may briefly reject requests while a free instance wakes up.
+        }
     }
+
+    return false;
 }
 
 export async function fetchScore(prompt) {

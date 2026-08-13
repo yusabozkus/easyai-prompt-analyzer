@@ -1,15 +1,19 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Response
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+
 from prompt_analyzer.score import score
 from estimate_token.estimate import calculate_ewk_dto
+
 
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
+    allow_origins=[
+        "https://easyai-prompt-analyzer.vercel.app"
+    ],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -25,7 +29,8 @@ def read_root():
 
 
 @app.get("/health")
-def health_check():
+def health_check(response: Response):
+    response.headers["Cache-Control"] = "no-store"
     return {"status": "ok"}
 
 
