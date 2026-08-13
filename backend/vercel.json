@@ -1,0 +1,8 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "server.py": {
+      "excludeFiles": "{prompt_analyzer/model/quality.jsonl,prompt_analyzer/model/change_dataset.py}"
+    }
+  }
+}
